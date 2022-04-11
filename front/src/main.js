@@ -1,6 +1,15 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from './store'
+// import store from './store'
 
-createApp(App).use(store).use(router).mount('#app')
+import { initializeApp } from 'firebase/app'
+
+// createApp(App).use(store).use(router).mount('#app')
+createApp(App).use(router).mount('#app')
+
+// firebaseの設定ファイルは秘匿性の高い情報を含むので外部ファイルで定義
+const firebaseConfig = require('./firebase');
+
+// Initialize Firebase
+initializeApp(firebaseConfig);

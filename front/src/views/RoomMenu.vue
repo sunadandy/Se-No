@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button @click="ExitRoom($route.params.id)">退出する</button>
+        <button @click="ExitRoom_child($route.params.id)">退出する</button><br>
         <subject-form />
     </div>
 </template>
@@ -14,10 +14,9 @@ export default {
         SubjectForm
     },
     methods: {
-        ExitRoom(room_id) {
-            this.$store.commit('DecrementRoomUser', room_id)
-            this.$router.push("/")
-        },
+        ExitRoom_child(key){
+            this.$emit('ExitRoom', key)
+        }
     },
 }
 </script>

@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { getDatabase, ref, push } from "firebase/database";
+
 export default {
     name: "RoomForm",
     data() {
@@ -32,17 +34,15 @@ export default {
     },
     methods: {
         CreateRoomEvt(){
+            const db = getDatabase();
             // 入力情報が全て入っているか確認
             if(this.room_name != ""  && this.room_capa != "") {
-                // 部屋一覧の取得
-                let rooms = this.$store.getters.GetRoomList
-                // 一番最後に追加された部屋のIDを取得
-                let roomNum = Object.keys(rooms).length
-                let max_room_id = rooms[roomNum - 1].id
-                // 部屋作成
-                this.$store.commit('AddRoom', {id: max_room_id+1, name: this.room_name, capacity: this.room_capa, users: 1})
-                // リダイレクト
-                this.$router.push({name: "RoomView", params: {id: max_room_id+1}})
+                // 部屋作成(userは作成と同時にカウント１、idは使用していないので0固定)
+                push(ref(db, "Rooms"), {name: this.room_name, capacity: this.room_capa, users: 1, id: 0})
+                .then(res => {  // thenは非同期実行。つまりpushが完了したのちに呼ばれている
+                    // リダイレクト
+                    this.$router.push({name: "RoomView", params: {id: res.key}})
+                })
             } else {
                 alert("入力情報が正しくありません。")
             }
