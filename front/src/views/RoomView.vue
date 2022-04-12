@@ -21,6 +21,7 @@ export default {
         return {
             rooms: [],
             roomInfo: [],
+            question: []
         }
     },
     mounted: function() {

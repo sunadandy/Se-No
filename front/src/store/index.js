@@ -1,6 +1,5 @@
 import { createStore } from 'vuex'
-// データ永続化のためのプラグイン（Vuexは通常リロードでデータが消える）
-import createPersistedState from 'vuex-persistedstate'
+// import createPersistedState from 'vuex-persistedstate'
 
 const getDefaultState = () => {
   return { 
@@ -8,7 +7,6 @@ const getDefaultState = () => {
     name: "サンプルルーム",
     capacity: 0,
     users: 0,
-    subject: ""
   }
 }
 

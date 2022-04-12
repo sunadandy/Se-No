@@ -45,12 +45,20 @@ export default {
                 // 入室前にユーザーカウンタをインクリメント
                 update(ref(db, "Rooms/" + key), {"users": room_users + 1})
                 .then(() => {
+                    // Cookie発行
+                    this.SetCookies()
                     // リダイレクト
                     this.$router.push({name: "RoomView", params: {id: key}})
                 })
             } else {
                 alert("満員です")
             }
+        },
+        SetCookies: function() {
+            // 0 - 65535でのランダムな整数を生成してクッキーとする
+            let cookieVal = Math.floor(Math.random() * 65535)
+            // Cookie名,値,保存日数
+            this.$cookies.set("Cookie se-no", cookieVal, '10min')
         }
     }
 };

@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import { getDatabase, ref, update } from "firebase/database";
+import { getDatabase, ref, set } from "firebase/database";
 
 export default {
     name: "SubjectForm",
@@ -15,15 +15,10 @@ export default {
     },
     methods: {
         SetSubject: function() {
-            // URLからキー取得
             let key = this.$route.params.id
 
             const db = getDatabase();
-            update(ref(db, "Rooms/" + key), {"subject": this.subject})
-            .then(() => {
-                // リダイレクト
-                this.$router.push("/Room/" + key)
-            })
+            set(ref(db, "Q&A/" + key), {"subject": this.subject})
         },
     }
 };
