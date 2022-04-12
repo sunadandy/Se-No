@@ -55,7 +55,6 @@ export default createStore({
     StoredSubject(state, payload) {
       let room = state.rooms.filter((room) => room.id == payload.id)[0]
       room.subject = payload.subject
-      console.log(room)
     }
   },
   // actionでは非同期処理を実現できる

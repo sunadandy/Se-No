@@ -1,62 +1,50 @@
 <template>
-    <room-menu @ExitRoom="ExitRoom"/>
     <div>
-        現在、{{ roomInfo.users }}人が入室しています。({{ roomInfo.capacity}}人部屋)<br>
+        <subject-form />
+        <button class="se-no btn" @click="ShowAnswers">せーの！</button>
     </div>
     <div>
-        {{ roomInfo.subject }}
+        <button v-for="user in room.users" :key="user">{{ user }}</button>
+    </div>
+    <div>
+        {{ room.subject }}
+    </div>
+    <div>
+        <room-exit />
     </div>
 </template>
 
 <script>
-import RoomMenu from '@/views/RoomMenu'
-import { getDatabase, ref, onValue, update, remove } from "firebase/database";
+import RoomExit from '@/components/RoomExit'
+import SubjectForm from '@/components/SubjectForm'
+import { getDatabase, ref, onValue } from "firebase/database";
 
 export default {
     name: "RoomView",
     components: {
-        RoomMenu,
+        RoomExit,
+        SubjectForm,
     },
     data() {
         return {
-            rooms: [],
-            roomInfo: [],
-            question: []
+            room: [],
         }
     },
     mounted: function() {
         // URLからキー取得
         let key = this.$route.params.id
-
-        // 要共有化関数
+        
         const db = getDatabase();
-        onValue(ref(db, 'Rooms'), (obj) => {
+        onValue(ref(db, 'Rooms/' + key), (obj) => {
             if (obj.exists()) {
-                this.rooms = obj.val()
-                this.roomInfo = this.rooms[key]
+                this.room = obj.val()
             }
         }, { onlyOnce: false });
     },
     methods: {
-        ExitRoom(key) {
-            const db = getDatabase()
-
-            // 部屋人数が１の状態で退出した場合、部屋を削除
-            if(this.roomInfo.users === 1){
-                remove(ref(db, "Rooms/" + key))
-                .then(() => {
-                    // リダイレクト
-                    this.$router.push("/")
-                })
-            } else {
-                // usersカウンターをデクリメント
-                update(ref(db, "Rooms/" + key), {"users": this.roomInfo.users -1})
-                .then(() => {
-                    // リダイレクト
-                    this.$router.push("/")
-                })
-            }
-        },
+        ShowAnswers: function() {
+            
+        }
     }
 }
 </script>

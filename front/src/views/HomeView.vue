@@ -1,20 +1,21 @@
 <template>
-    <home-menu />
     <div>
-        <h2>現在作られている部屋一覧</h2>
-        <room-list></room-list>
+        <room-form />
+    </div>
+    <div>
+        <room-list />
     </div>
 </template>
 
 <script>
-import HomeMenu from '@/views/HomeMenu'
+import RoomForm from '@/components/RoomForm'
 import RoomList from '@/components/RoomList'
 
 export default {
     name: 'HomeView',
     components: {
-      HomeMenu,
-      RoomList
+        RoomForm,
+        RoomList,
     },
 };
 </script>

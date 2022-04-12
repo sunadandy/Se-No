@@ -1,4 +1,5 @@
 <template>
+    <h2>現在作られている部屋一覧</h2>
     <table>
         <thead>
             <tr>
@@ -13,6 +14,9 @@
                 <td>{{ room.users }}/{{ room.capacity }}</td>
                 <td><button @click="EnterRoom(room.capacity, room.users, key)">入室</button></td>
             </tr>
+            <cookie-controller
+                ref="child"
+            />
         </tbody>
     </table>
 </template>
@@ -21,9 +25,13 @@
 // getはデータベースから、onValueはクライアントのキャッシュからデータを取得するらしい
 // 参考：https://doz13189.hatenablog.com/entry/2019/02/03/030706
 import { getDatabase, ref, onValue, update } from "firebase/database";
+import CookieController from '@/components/CookieController'
 
 export default {
     name: "RoomList",
+    components: {
+        CookieController
+    },
     data() {
         return {
             rooms: [],
@@ -32,21 +40,20 @@ export default {
     mounted: function() {
         const db = getDatabase();
         onValue(ref(db, 'Rooms'), (obj) => {
-            if (obj.val() != null) {
+            if (obj.exists()) {
                 this.rooms = obj.val()
             }
         }, { onlyOnce: false });
     },
     methods: {
         EnterRoom: function(room_capa, room_users, key) {
-            // 入室上限数に未達(usersはwatch対象変数かもしれない)
             if(room_capa != room_users) {
                 const db = getDatabase()
                 // 入室前にユーザーカウンタをインクリメント
                 update(ref(db, "Rooms/" + key), {"users": room_users + 1})
                 .then(() => {
                     // Cookie発行
-                    this.SetCookies()
+                    this.$refs.child.SetCookie()
                     // リダイレクト
                     this.$router.push({name: "RoomView", params: {id: key}})
                 })
@@ -54,12 +61,6 @@ export default {
                 alert("満員です")
             }
         },
-        SetCookies: function() {
-            // 0 - 65535でのランダムな整数を生成してクッキーとする
-            let cookieVal = Math.floor(Math.random() * 65535)
-            // Cookie名,値,保存日数
-            this.$cookies.set("Cookie se-no", cookieVal, '10min')
-        }
     }
 };
 </script>

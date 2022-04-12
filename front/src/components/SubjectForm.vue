@@ -1,6 +1,7 @@
 <template>
-    お題入力：<input type=text placeholder="ここにお題を入力してください。" size=60 v-model='subject'>
-    <button @click="SetSubject">設定</button>
+    <div>
+        <input type=text placeholder="お題を設定しよう！" size=60 v-model='subject'>
+    </div>
 </template>
 
 <script>
@@ -13,14 +14,14 @@ export default {
             subject: ""
         }
     },
-    methods: {
-        SetSubject: function() {
+    watch: {
+        subject: function() {
             let key = this.$route.params.id
 
             const db = getDatabase();
             set(ref(db, "Q&A/" + key), {"subject": this.subject})
-        },
-    }
+        }
+    },
 };
 </script>
 
