@@ -9,3 +9,11 @@ export default {
   name: 'App'
 }
 </script>
+
+<style>
+html {
+  height:100%;
+  color: black;
+  background: linear-gradient(blanchedalmond, floralwhite);
+}
+</style>

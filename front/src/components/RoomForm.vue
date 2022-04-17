@@ -1,26 +1,28 @@
 <template>
-    <h2>部屋をつくる</h2>
-    部屋名<br>
-    <input type="text" v-model="room_name"><br>
-    人数<br>
-    <select name="人数" v-model="room_capa"><br>
-        <option value=1>1</option>
-        <option value=2>2</option>
-        <option value=3>3</option>
-        <option value=4>4</option>
-        <option value=5>5</option>
-        <option value=6>6</option>
-        <option value=7>7</option>
-        <option value=8>8</option>
-        <option value=9>9</option>
-        <option value=10>10</option>
-    </select><br>
-    <!-- ユーザー名<br>
-    <input type="text" v-model="username"><br><br> -->
-    <button @click="CreateRoomEvt()">作成</button><br>
-    <cookie-controller
-        ref="child"
-    />
+    <div class="room-form">
+        <h2>部屋をつくる</h2>
+        部屋名<br>
+        <input type="text" v-model="room_name" size=80><br>
+        人数<br>
+        <select name="人数" v-model="room_capa"><br>
+            <option value=1>1</option>
+            <option value=2>2</option>
+            <option value=3>3</option>
+            <option value=4>4</option>
+            <option value=5>5</option>
+            <option value=6>6</option>
+            <option value=7>7</option>
+            <option value=8>8</option>
+            <option value=9>9</option>
+            <option value=10>10</option>
+        </select><br>
+        <!-- ユーザー名<br>
+        <input type="text" v-model="username"><br><br> -->
+        <button @click="CreateRoomEvt()">作成</button><br>
+        <cookie-controller
+            ref="child"
+        />
+    </div>
 </template>
 
 <script>
@@ -60,15 +62,12 @@ export default {
 </script>
 
 <style scoped>
-    h1 {
-        background-color: antiquewhite;
+    .room-form {
+        text-align: center;
+        border: 3px solid black;
+        padding-bottom: 10px;
     }
-    .flex {
-        display:flex;             /* 縦二分割 */
-        justify-content: left;    /* 中央寄せ */
-        background-color: aquamarine;
-    }
-    .menu {
-        margin:0px 10px;
+    button {
+        margin-top: 10px
     }
 </style>

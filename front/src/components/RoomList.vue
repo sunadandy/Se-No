@@ -1,24 +1,26 @@
 <template>
-    <h2>現在作られている部屋一覧</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>部屋名</th>
-                <th>入室状況</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- keyはなんでもいい -->
-            <tr v-for="(room, key) in rooms" :key="room.id">
-                <td>{{ room.name }}</td>
-                <td>{{ room.users }}/{{ room.capacity }}</td>
-                <td><button @click="EnterRoom(room.capacity, room.users, key)">入室</button></td>
-            </tr>
-            <cookie-controller
-                ref="child"
-            />
-        </tbody>
-    </table>
+    <div class="room-list">
+        <h2>現在作られている部屋一覧</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>部屋名</th>
+                    <th>入室状況</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- keyはなんでもいい -->
+                <tr v-for="(room, key) in rooms" :key="room.id">
+                    <td class="room-name">{{ room.name }}</td>
+                    <td class="room-capa">{{ room.users }}/{{ room.capacity }}</td>
+                    <td><button @click="EnterRoom(room.capacity, room.users, key)">入室</button></td>
+                </tr>
+                <cookie-controller
+                    ref="child"
+                />
+            </tbody>
+        </table>
+    </div>
 </template>
 
 <script>
@@ -66,11 +68,27 @@ export default {
 </script>
 
 <style scoped>
-    td {
+    .room-list {
         text-align: center;
-        border: 2px black solid
+        border: 3px black solid;
+        margin-top: 20px;
     }
     table {
-        border: 2px black solid
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 15px;
+    }
+    tbody {
+        padding: 0px 10px;
+    }
+    td.room-name {
+        width: 400px;
+        text-align: center;
+        border: 2px black solid;
+    }
+    td.room-capa {
+        width: 100px;
+        text-align: center;
+        border: 2px black solid;
     }
 </style>
