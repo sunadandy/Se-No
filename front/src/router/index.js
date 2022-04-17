@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView'
 import RoomView from '@/views/RoomView'
+import AnswerPresentation from '@/components/AnswerPresentation'
 import VueCookies from 'vue-cookies'
 
 const COOKIE_NAME = "Cookie se-no"
@@ -28,6 +29,11 @@ const routes = [
         next(true)
       }
     }
+  },
+  {
+    path: '/Room/:id/:attri',
+    name: 'Answer',
+    component: AnswerPresentation,
   }
 ]
 

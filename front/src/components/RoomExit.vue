@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button @click="ExitRoom($route.params.id)">退出する</button><br>
+        <button @click="ExitRoom($route.params.id)">EXIT</button><br>
     </div>
 </template>
 
@@ -31,6 +31,8 @@ export default {
                     })
                 } else {
                     // usersカウンターをデクリメント
+                    // [Issue]更新した直後にページが更新されるため、リダイレクトより先に画面描画が走ってしまう
+                    // -> この瞬間だけmountedが機能しないようにフラグを持たせる？
                     update(refdb, {"users": this.room.users -1})
                     .then(() => {
                         // リダイレクト

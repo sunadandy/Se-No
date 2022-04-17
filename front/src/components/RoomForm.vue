@@ -35,8 +35,7 @@ export default {
     data() {
         return {
             room_name: "",
-            room_capa: "",
-            username: "",
+            room_capa: Number,
         }
     },
     methods: {
@@ -45,7 +44,7 @@ export default {
             // 入力情報が全て入っているか確認
             if(this.room_name != ""  && this.room_capa != "") {
                 // 部屋作成(userは作成と同時にカウント１、idは使用していないので0固定)
-                push(ref(db, "Rooms"), {name: this.room_name, capacity: this.room_capa, users: 1, id: 0})
+                push(ref(db, "Rooms"), {name: this.room_name, capacity: Number(this.room_capa), users: 1})
                 .then(res => {  // thenは非同期実行。つまりpushが完了したのちに呼ばれている
                     // Cookie発行
                     this.$refs.child.SetCookie()

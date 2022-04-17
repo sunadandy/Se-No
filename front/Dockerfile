@@ -4,7 +4,7 @@ WORKDIR .
 
 ADD . .
 
-RUN rm -rf package-lock.json node_modules
+# RUN rm -rf package-lock.json node_modules
 RUN npm install npm
 RUN npm install @vue/cli
 RUN npm install @vue/cli-service
