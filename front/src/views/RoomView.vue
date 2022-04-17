@@ -30,7 +30,7 @@
 import RoomExit from '@/components/RoomExit'
 import SubjectForm from '@/components/SubjectForm'
 import AnswerForm from '@/components/AnswerForm'
-import { getDatabase, ref, onValue } from "firebase/database"
+import { getDatabase, ref, onValue, update } from "firebase/database"
 
 export default {
     name: "RoomView",
@@ -43,8 +43,8 @@ export default {
         return {
             room: [],
             subjectObj: [],
-            answerNum: Number,
-            isPush: true
+            answerNum: 0,
+            isPush: true,
         }
     },
     watch: {
@@ -60,7 +60,13 @@ export default {
             if(this.answerNum === this.room.users) {
                 this.isPush = false
             }
-        }
+
+            // リザルトトリガを監視してクライアントの画面一斉表示を判断
+            if(this.subjectObj.resultTrigger === 1){
+                const key = this.$route.params.id
+                this.$router.push({name: "Answer", params: {id: key, attri: "answer"}})
+            }
+        },
     },
     mounted: function() {
         // URLからキー取得
@@ -82,7 +88,8 @@ export default {
     methods: {
         ShowAnswers: function() {
             const key = this.$route.params.id
-            this.$router.push({name: "Answer", params: {id: key, attri: "answer"}})
+            const db = getDatabase();
+            update(ref(db, 'QA/' + key), {"resultTrigger": 1})
         }
     }
 }

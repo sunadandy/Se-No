@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button @click="ExitRoom($route.params.id)">EXIT</button><br>
+        <button @click="ExitRoom">EXIT</button><br>
     </div>
 </template>
 
@@ -15,7 +15,8 @@ export default {
         }
     },
     methods: {
-        ExitRoom(key) {
+        ExitRoom() {
+            const key = this.$route.params.id 
             const db = getDatabase();
             const refdb = ref(db, 'Rooms/' + key)
             onValue(refdb, (obj) => {
@@ -24,6 +25,9 @@ export default {
                 }
                 // 部屋人数が１の状態で退出した場合、部屋を削除
                 if(this.room.users === 1){
+                    // お題DB削除
+                    remove(ref(db, 'QA/' + key))
+                    // 部屋DB削除
                     remove(refdb)
                     .then(() => {
                         // リダイレクト

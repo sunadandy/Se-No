@@ -1,5 +1,6 @@
 <template>
     <div>
+        <!-- [Issue]お題未設定の時に回答を入力できないように -->
         <input v-on:keyup.enter="SubmitAnswer" placeholder="お題に対する回答を入力しよう！" size=80 ref="input">
     </div>
 </template>
@@ -12,6 +13,7 @@ export default {
     data() {
         return {
             answer: "",
+            isInput: true,
         }
     },
     methods: {
