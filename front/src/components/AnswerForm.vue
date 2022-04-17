@@ -21,11 +21,11 @@ export default {
             const key = this.$route.params.id
             const db = getDatabase();
             const refdb = ref(db, "QA/" + key + "/answer")
-            const cookieVal = this.$cookies.get("Cookie se-no")            
+            const enterNo = this.$store.getters.GetRoomEnterNo         
             this.answer = this.$refs.input.value
 
             // 回答をDBに送信
-            update(refdb, {[cookieVal]: this.answer})
+            update(refdb, {[enterNo]: this.answer})
             // フォームクリア
             this.$refs.input.value = null
             // [Issue]お題設定完了アニメーションを追加したい（jQuery？）

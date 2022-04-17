@@ -1,61 +1,24 @@
 import { createStore } from 'vuex'
-// import createPersistedState from 'vuex-persistedstate'
-
-const getDefaultState = () => {
-  return { 
-    id: 0,
-    name: "サンプルルーム",
-    capacity: 0,
-    users: 0,
-  }
-}
+import createPersistedState from 'vuex-persistedstate'
 
 export default createStore({
   // stateに追加したプロパティは全てのコンポーネントからアクセス可能
   state: {
-    rooms: []
+    RoomEnterNo: -1
   },
   getters: {
-    GetRoomList(state){
-      return state.rooms;
+    GetRoomEnterNo(state){
+      return state.RoomEnterNo;
     },
-    GetRoomInfoByID: (state) => (room_id) => {
-      // 場合によると思うが、state.roomsに関してはfilter結果はArray型でリターンされる
-      // 欲しいデータは先頭要素なので[0]を指定
-      return state.rooms.filter(room => room.id == room_id)[0]
-    }
   },
   mutations: {
-    StoreInit(state) {
-      state.rooms = []
-      state.rooms.push(getDefaultState())
+    SetRoomEnterNo(state) {
+      // 0 - 4294967295間のランダムな整数をログインNoに設定（異なるクライアント間で重複する可能性はあるがユーザ数を考慮すると超低確率なので気にしない）
+      state.RoomEnterNo = Math.floor(Math.random() * 4294967295)
     },
-    AddRoom(state, payload){
-      state.rooms.push(payload)
+    ClearRoomEnterNo(state) {
+      state.RoomEnterNo = -1
     },
-    IncrementRoomUser(state, room_id){
-      state.rooms.filter(function(room){
-        if(room.id == room_id){
-          room.users += 1
-        }
-      })
-    },
-    DecrementRoomUser(state, room_id){
-      state.rooms.filter(function(room){
-        if(room.id == room_id){
-          room.users -= 1
-          // 入室人数が0になったら部屋を削除
-          if(room.users == 0){
-            // フィルタで入室人数0以外の部屋が配列でリターンされるので、それを上書きで実現
-            state.rooms = state.rooms.filter((room) => room.id != room_id)
-          }
-        }
-      })
-    },
-    StoredSubject(state, payload) {
-      let room = state.rooms.filter((room) => room.id == payload.id)[0]
-      room.subject = payload.subject
-    }
   },
   // actionでは非同期処理を実現できる
   actions: {

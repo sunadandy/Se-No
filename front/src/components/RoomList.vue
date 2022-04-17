@@ -15,9 +15,6 @@
                     <td class="room-capa">{{ room.users }}/{{ room.capacity }}</td>
                     <td><button @click="EnterRoom(room.capacity, room.users, key)">入室</button></td>
                 </tr>
-                <cookie-controller
-                    ref="child"
-                />
             </tbody>
         </table>
     </div>
@@ -27,13 +24,9 @@
 // getはデータベースから、onValueはクライアントのキャッシュからデータを取得するらしい
 // 参考：https://doz13189.hatenablog.com/entry/2019/02/03/030706
 import { getDatabase, ref, onValue, update } from "firebase/database";
-import CookieController from '@/components/CookieController'
 
 export default {
     name: "RoomList",
-    components: {
-        CookieController
-    },
     data() {
         return {
             rooms: [],
@@ -54,8 +47,8 @@ export default {
                 // 入室前にユーザーカウンタをインクリメント
                 update(ref(db, "Rooms/" + key), {"users": room_users + 1})
                 .then(() => {
-                    // Cookie発行
-                    this.$refs.child.SetCookie()
+                    // 入室番号発行
+                    this.$store.commit('SetRoomEnterNo')
                     // リダイレクト
                     this.$router.push({name: "RoomView", params: {id: key}})
                 })

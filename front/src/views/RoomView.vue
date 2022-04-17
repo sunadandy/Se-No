@@ -1,4 +1,7 @@
 <template>
+    <div class="enterno">
+    入室No：{{ EnterNo }}
+    </div>
     <div>
     現在のお題：{{ subjectObj.subject }}
     </div>
@@ -68,6 +71,11 @@ export default {
             }
         },
     },
+    computed: {
+        EnterNo: function(){
+            return this.$store.getters.GetRoomEnterNo
+        }
+    },
     mounted: function() {
         // URLからキー取得
         const key = this.$route.params.id
@@ -98,5 +106,9 @@ export default {
 <style scoped>
 .flex {
     display: flex;
+}
+div.enterno {
+    font-size: 10px;
+    text-align: right;
 }
 </style>

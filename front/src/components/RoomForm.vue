@@ -19,21 +19,14 @@
         <!-- ユーザー名<br>
         <input type="text" v-model="username"><br><br> -->
         <button @click="CreateRoomEvt()">作成</button><br>
-        <cookie-controller
-            ref="child"
-        />
     </div>
 </template>
 
 <script>
 import { getDatabase, ref, push } from "firebase/database";
-import CookieController from "@/components/CookieController";
 
 export default {
     name: "RoomForm",
-    components: {
-        CookieController
-    },
     data() {
         return {
             room_name: "",
@@ -48,8 +41,8 @@ export default {
                 // 部屋作成(userは作成と同時にカウント１、idは使用していないので0固定)
                 push(ref(db, "Rooms"), {name: this.room_name, capacity: Number(this.room_capa), users: 1})
                 .then(res => {  // thenは非同期実行。つまりpushが完了したのちに呼ばれている
-                    // Cookie発行
-                    this.$refs.child.SetCookie()
+                    // 入室番号発行
+                    this.$store.commit('SetRoomEnterNo')
                     // リダイレクト
                     this.$router.push({name: "RoomView", params: {id: res.key}})
                 })

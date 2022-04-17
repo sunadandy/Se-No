@@ -41,8 +41,8 @@ export default {
         AnswerAgain: function() {
             const key = this.$route.params.id
             const db = getDatabase();
-            const cookieVal = this.$cookies.get("Cookie se-no")            
-            const refdb = ref(db, "QA/" + key + "/answer/" + cookieVal)
+            const enterNo = this.$store.getters.GetRoomEnterNo            
+            const refdb = ref(db, "QA/" + key + "/answer/" + enterNo)
 
             // 自分の回答をお題DBから削除
             remove(refdb)

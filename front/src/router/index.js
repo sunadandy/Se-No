@@ -1,10 +1,9 @@
+import store from '@/store/index.js'
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView'
 import RoomView from '@/views/RoomView'
 import AnswerPresentation from '@/components/AnswerPresentation'
-import VueCookies from 'vue-cookies'
-
-const COOKIE_NAME = "Cookie se-no"
+// import VueCookies from 'vue-cookies'
 
 const routes = [
   {
@@ -12,8 +11,9 @@ const routes = [
     name: 'Home',
     component: HomeView,
     beforeEnter: () => {
-      if(VueCookies.isKey(COOKIE_NAME) === true){
-        VueCookies.remove(COOKIE_NAME)
+      const enterNo = store.getters.GetRoomEnterNo
+      if(enterNo !== -1){
+        store.commit('ClearRoomEnterNo')
       }
     }
   },
@@ -22,9 +22,10 @@ const routes = [
     name: 'RoomView',
     component: RoomView,
     beforeEnter: (to, from, next) => {
-      if(VueCookies.isKey(COOKIE_NAME) === false){
-        // alert("不正なアクセス。入室できません。")
-        // next(false)   // ナビゲーションを中止
+      const enterNo = store.getters.GetRoomEnterNo
+      if(enterNo === -1){
+        alert("不正なアクセス。入室できません。")
+        next(false)   // ナビゲーションを中止
       } else {
         next(true)
       }
