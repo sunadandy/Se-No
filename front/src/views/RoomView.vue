@@ -14,18 +14,18 @@
             <img src="@/assets/images/sozai_cman_jp_20220414000053.png">
         </div>
         <!-- [Issue]この処理警告アリ -->
-        <div v-for="no_ans in room.users - answerNum" :key="no_ans">
+        <div v-for="no_ans in roomObj.users - answerNum" :key="no_ans">
             <img src="@/assets/images/sozai_cman_jp_20220414000129.png">
         </div>
     </div>
     <div>
-        {{ room.subject }}
+        {{ roomObj.subject }}
     </div>
     <div>
-        <answer-form />
+        <answer-form v-bind:subject="subject" />
     </div>
     <div>
-        <room-exit />
+        <room-exit v-bind:users="roomObj.users" />
     </div>
 </template>
 
@@ -44,14 +44,18 @@ export default {
     },
     data() {
         return {
-            room: [],
+            roomObj: [],
             subjectObj: [],
             answerNum: 0,
+            subject: "",
             isPush: true,
         }
     },
     watch: {
         subjectObj: function() {
+            // お題更新
+            this.subject = this.subjectObj.subject
+
             // お題DBから回答数を取得。回答がまだ存在しない場合は0を設定
             if(this.subjectObj.answer){
                 this.answerNum = Object.keys(this.subjectObj.answer).length
@@ -60,7 +64,7 @@ export default {
             }
 
             // 入室数と回答数が等しくなったらせーの！ボタンを押下可能に。
-            if(this.answerNum === this.room.users) {
+            if(this.answerNum === this.roomObj.users) {
                 this.isPush = false
             }
 
@@ -83,7 +87,7 @@ export default {
         // ルームDB読み込み
         onValue(ref(db, 'Rooms/' + key), (obj) => {
             if (obj.exists()) {
-                this.room = obj.val()
+                this.roomObj = obj.val()
             }
         }, { onlyOnce: false });
         // お題DB読み込み

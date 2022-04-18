@@ -1,7 +1,6 @@
 <template>
     <div>
-        <!-- [Issue]お題未設定の時に回答を入力できないように -->
-        <input v-on:keyup.enter="SubmitAnswer" placeholder="お題に対する回答を入力しよう！" size=80 ref="input">
+        <input v-on:keyup.enter="SubmitAnswer" placeholder="お題に対する回答を入力しよう！" size=80 ref="input" :disabled='isInput'>
     </div>
 </template>
 
@@ -14,6 +13,18 @@ export default {
         return {
             answer: "",
             isInput: true,
+        }
+    },
+    props: {
+        subject: {
+            type: String,
+        }
+    },
+    watch: {
+        subject: function() {
+            if(this.subject !== null){
+                this.isInput = false
+            }
         }
     },
     methods: {
