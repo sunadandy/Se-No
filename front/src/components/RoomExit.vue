@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button @click="ExitRoom">EXIT</button><br>
+        <v-btn variant="contained-text" :rounded="0" @click="ExitRoom">EXIT</v-btn>
     </div>
 </template>
 
@@ -49,3 +49,9 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+div {
+    text-align: right;
+}
+</style>

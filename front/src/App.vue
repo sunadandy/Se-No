@@ -1,19 +1,24 @@
 <template>
-  <div id="app">
-    <router-view />
-  </div>
+  <v-app>
+    <v-app-bar color="success">
+      <v-toolbar-title><h2>せーの！</h2></v-toolbar-title>
+    </v-app-bar>
+    <v-main class="app">
+      <router-view/>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
+
 export default {
-  name: 'App'
+  name: 'App',
 }
 </script>
 
-<style>
-html {
-  height:100%;
-  color: black;
-  background: linear-gradient(blanchedalmond, floralwhite);
+<style scoped>
+.app {
+  width: 900px;
+  margin: auto;
 }
 </style>

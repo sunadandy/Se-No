@@ -1,22 +1,17 @@
 <template>
-    <div class="enterno">
-    入室No：{{ EnterNo }}
+    <div class="room-header">
+    {{ roomObj.users }}/{{ roomObj.capacity }}が入室中（あなたの入室は{{ EnterNo }}）
     </div>
-    <div>
+    <div class="current-subject">
     現在のお題：{{ subjectObj.subject }}
     </div>
-    <div>
+    <div class="se-no-btn">
         <subject-form />
-        <button class="se-no btn" @click="ShowAnswers" :disabled="isPush">せーの！</button>
+        <v-btn rounded="pill" color="secondary" size="x-large" @click="ShowAnswers" :disabled="isPush">せーの！</v-btn>
     </div>
-    <div class="flex">
-        <div v-for="ans in subjectObj.answer" :key="ans">
-            <img src="@/assets/images/sozai_cman_jp_20220414000053.png">
-        </div>
-        <!-- [Issue]この処理警告アリ -->
-        <div v-for="no_ans in roomObj.users - answerNum" :key="no_ans">
-            <img src="@/assets/images/sozai_cman_jp_20220414000129.png">
-        </div>
+    <div class="user-icon">
+        <img src="@/assets/images/sozai_cman_jp_20220414000053.png" v-for="ans in subjectObj.answer" :key="ans">
+        <img src="@/assets/images/sozai_cman_jp_20220414000129.png" v-for="no_ans in roomObj.users - answerNum" :key="no_ans">
     </div>
     <div>
         {{ roomObj.subject }}
@@ -108,11 +103,24 @@ export default {
 </script>
 
 <style scoped>
-.flex {
-    display: flex;
+.user-icon {
+    text-align: center;
+    margin: 20px 0px;
 }
-div.enterno {
-    font-size: 10px;
+img {
+    margin:0px 5px;
+}
+.room-header {
+    font-size: 11px;
+    margin: 5px;
     text-align: right;
+}
+.current-subject {
+    margin: 10px;
+    padding-bottom: 10px;
+}
+div.se-no-btn {
+    text-align: center;
+    padding-bottom: 50px;
 }
 </style>

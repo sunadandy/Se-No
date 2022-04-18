@@ -1,7 +1,5 @@
 <template>
-    <div>
-        <input v-on:keyup.enter="SubmitAnswer" placeholder="お題に対する回答を入力しよう！" size=80 ref="input" :disabled='isInput'>
-    </div>
+    <v-text-field v-on:keyup.enter="SubmitAnswer" label="回答入力" placeholder="お題に対する回答を入力しよう！" :disabled='isInput' variant="underlined" clearable ref="input"></v-text-field>
 </template>
 
 <script>
@@ -37,8 +35,8 @@ export default {
 
             // 回答をDBに送信
             update(refdb, {[enterNo]: this.answer})
-            // フォームクリア
-            this.$refs.input.value = null
+            // フォームクリア -> vuetify導入後は機能していない
+            // this.$refs.input.value = null
             // [Issue]お題設定完了アニメーションを追加したい（jQuery？）
         }
     }

@@ -1,14 +1,29 @@
 <template>
-    <div>
-        <button class="se-no btn" @click="AnswerAgain">もう一度</button>
-        <div class="flex">
-            <div v-for="ans in subjectObj" :key="ans">
-                {{ ans }}
-            </div>
+    <v-alert class="header"
+      prominent
+      type="error"
+      variant="outlined"
+      density="compact"
+    >
+      ブラウザバックしないで！
+    </v-alert>
+    <div class="flex">
+        <div class="answer-card" v-for="ans in subjectObj" :key="ans">
+            <v-card
+                width="200"
+                height="200"
+            >
+                <v-card-header>
+                    <div>
+                        <div class="text-overline mb-1">誰かの回答</div>
+                        <div class="text-h6 mb-1">{{ans}}</div>
+                    </div>
+                </v-card-header>
+            </v-card>
         </div>
     </div>
-    <div>
-        <room-exit />
+    <div class="browser-back">
+        <v-btn variant="contained-text" :rounded="0" @click="AnswerAgain">戻る</v-btn>
     </div>
 </template>
 
@@ -56,5 +71,14 @@ export default {
 <style scoped>
 .flex {
     display: flex;
+}
+.header {
+    margin-top: 10px;
+}
+div.browser-back {
+    text-align: right;
+}
+div.answer-card {
+    margin: 10px 5px;
 }
 </style>

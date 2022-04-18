@@ -1,22 +1,23 @@
 <template>
     <div class="room-list">
         <h2>現在作られている部屋一覧</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>部屋名</th>
-                    <th>入室状況</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- keyはなんでもいい -->
-                <tr v-for="(room, key) in rooms" :key="room.id">
-                    <td class="room-name">{{ room.name }}</td>
-                    <td class="room-capa">{{ room.users }}/{{ room.capacity }}</td>
-                    <td><button @click="EnterRoom(room.capacity, room.users, key)">入室</button></td>
-                </tr>
-            </tbody>
-        </table>
+        <v-row class="room-table" justify="center">
+            <v-table>
+                <thead>
+                    <tr>
+                        <th class="room-name">部屋名</th>
+                        <th class="room-capa">入室状況</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(room, key) in rooms" :key="room.id">
+                        <td class="room-name">{{ room.name }}</td>
+                        <td class="room-capa">{{ room.users }}/{{ room.capacity }}</td>
+                        <td><v-btn flat :rounded="0" color="success" @click="EnterRoom(room.capacity, room.users, key)">ENTER</v-btn></td>
+                    </tr>
+                </tbody>
+            </v-table>
+        </v-row>
     </div>
 </template>
 
@@ -61,27 +62,23 @@ export default {
 </script>
 
 <style scoped>
+    h2 {
+        text-align: center;
+    }
     .room-list {
-        text-align: center;
-        border: 3px black solid;
-        margin-top: 20px;
+        border: 2px rgb(161, 158, 158) solid;
+        margin: 10px 0px;
+        padding: 20px 0px;
     }
-    table {
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: 15px;
+    .room-table {
+        margin: auto 10px;
     }
-    tbody {
-        padding: 0px 10px;
+    .room-name {
+        width: 500px;
+        text-align: left;
     }
-    td.room-name {
-        width: 400px;
-        text-align: center;
-        border: 2px black solid;
-    }
-    td.room-capa {
+    .room-capa {
         width: 100px;
         text-align: center;
-        border: 2px black solid;
     }
 </style>

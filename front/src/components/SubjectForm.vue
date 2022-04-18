@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <input type=text placeholder="お題を設定しよう！" size=60 v-on:keyup.enter='SubmitSubject' ref="input"><br>
+    <div class="subject">
+        <v-text-field placeholder="お題を設定しよう！" label="お題入力" v-on:keyup.enter='SubmitSubject' variant="underlined" clearable ref="input"></v-text-field>
     </div>
 </template>
 
@@ -23,8 +23,8 @@ export default {
 
             // お題をDBに送信
             set(refdb, {[key]: {"subject": this.subject}})
-            // DBへのセットが完了したので入力フォームをクリア
-            this.$refs.input.value = null
+            // DBへのセットが完了したので入力フォームをクリア -> vuetify導入後は機能していない
+            // this.$refs.input.value = null
             // [Issue]お題設定完了アニメーションを追加したい（jQuery？）
         }
     }
@@ -32,4 +32,7 @@ export default {
 </script>
 
 <style scoped>
+.subject {
+    margin: 10px
+}
 </style>

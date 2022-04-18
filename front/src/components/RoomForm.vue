@@ -1,24 +1,13 @@
 <template>
     <div class="room-form">
         <h2>部屋をつくる</h2>
-        部屋名<br>
-        <input type="text" v-model="room_name" size=80><br>
-        人数<br>
-        <select name="人数" v-model="room_capa"><br>
-            <option value=1>1</option>
-            <option value=2>2</option>
-            <option value=3>3</option>
-            <option value=4>4</option>
-            <option value=5>5</option>
-            <option value=6>6</option>
-            <option value=7>7</option>
-            <option value=8>8</option>
-            <option value=9>9</option>
-            <option value=10>10</option>
-        </select><br>
-        <!-- ユーザー名<br>
-        <input type="text" v-model="username"><br><br> -->
-        <button @click="CreateRoomEvt()">作成</button><br>
+            <v-col class="d-flex" cols="12" sm="16">
+                <v-text-field v-model="room_name" label="部屋名入力" variant="underlined"></v-text-field>
+            </v-col>
+            <v-col class="d-flex" cols="12" sm="16">
+                <v-select v-model="room_capa" :items="items" label="人数" variant="underlined"></v-select>
+            </v-col>
+        <v-btn flat rounded="pill" color="success" @click="CreateRoomEvt()">作成</v-btn>
     </div>
 </template>
 
@@ -29,8 +18,9 @@ export default {
     name: "RoomForm",
     data() {
         return {
-            room_name: "",
-            room_capa: Number,
+            room_name: null,
+            room_capa: null,
+            items: [1,2,3,4,5,6,7,8,9,10],
         }
     },
     methods: {
@@ -57,10 +47,8 @@ export default {
 <style scoped>
     .room-form {
         text-align: center;
-        border: 3px solid black;
-        padding-bottom: 10px;
-    }
-    button {
-        margin-top: 10px
+        border: 2px solid rgb(161, 158, 158);
+        padding: 20px 0px;
+        margin: 10px 0px;
     }
 </style>
