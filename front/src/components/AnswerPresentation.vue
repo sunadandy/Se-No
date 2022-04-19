@@ -30,6 +30,7 @@
 <script>
 import RoomExit from '@/components/RoomExit'
 import { getDatabase, ref, onValue, remove, update } from "firebase/database";
+import jquery from 'jquery' // DOMを変えるプラグインとVueの併用は、本当はあまりよろしくないらしい
 
 export default {
     name: "AnswerPresentation",
@@ -51,6 +52,13 @@ export default {
                 this.subjectObj = obj.val()
             }
         }, { onlyOnce: true });
+
+        // DOMの操作（リザルトカードをスライドインを実現）
+        jquery(function ($) {
+            const CALLNAME = "card-visiable";
+            const target = $(".flex");
+            $(target).addClass(CALLNAME);
+        })
     },
     methods: {
         AnswerAgain: function() {
@@ -61,6 +69,7 @@ export default {
 
             // 自分の回答をお題DBから削除
             remove(refdb)
+            // リザルト表示トリガをOFFに。
             update(ref(db, "QA/" + key), {"resultTrigger": 0})
             this.$router.push({name: "RoomView", params: {id: key}})
         }
@@ -71,6 +80,12 @@ export default {
 <style scoped>
 .flex {
     display: flex;
+    /* 1000%は適当な値。大きく設定すると下から上がってくるように見せられるから */
+    transform: translate(0, 1000%);
+}
+.flex.card-visiable {
+    transform: translate(0, 0);
+    transition: transform cubic-bezier(0.215, 0.61, 0.355, 1) 1.0s;
 }
 .header {
     margin-top: 10px;

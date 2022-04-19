@@ -6,6 +6,7 @@ ADD . .
 
 # RUN rm -rf package-lock.json node_modules
 RUN npm install npm
+RUN npm install jquery
 RUN npm install
 # RUN npm install vue-template-compiler
 # RUN npm install vue-router vuex vuex-persistedstate vue-cookies

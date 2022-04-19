@@ -1,15 +1,17 @@
 <template>
-    <div class="room-header">
-    {{ roomObj.users }}/{{ roomObj.capacity }}が入室中（あなたの入室は{{ EnterNo }}）
-    </div>
-    <div class="current-subject">
-    現在のお題：{{ subjectObj.subject }}
-    </div>
-    <div class="se-no-btn">
+    <p class="room-header">
+        {{ roomObj.users }}/{{ roomObj.capacity }}が入室中（あなたの入室番号は{{ EnterNo }}）
+    </p>
+    <p class="current-subject">
+        現在のお題：{{ subjectObj.subject }}
+    </p>
+    <div>
         <subject-form />
-        <v-btn rounded="pill" color="secondary" size="x-large" @click="ShowAnswers" :disabled="isPush">せーの！</v-btn>
     </div>
-    <div class="user-icon">
+    <div id="se-no-btn">
+        <v-btn rounded="circle" color="secondary" size="x-large" @click="ShowAnswers" :disabled="isPush">せーの！</v-btn>
+    </div>
+    <div id="user-icon">
         <img src="@/assets/images/sozai_cman_jp_20220414000053.png" v-for="ans in subjectObj.answer" :key="ans">
         <img src="@/assets/images/sozai_cman_jp_20220414000129.png" v-for="no_ans in roomObj.users - answerNum" :key="no_ans">
     </div>
@@ -42,15 +44,11 @@ export default {
             roomObj: [],
             subjectObj: [],
             answerNum: 0,
-            subject: "",
             isPush: true,
         }
     },
     watch: {
         subjectObj: function() {
-            // お題更新
-            this.subject = this.subjectObj.subject
-
             // お題DBから回答数を取得。回答がまだ存在しない場合は0を設定
             if(this.subjectObj.answer){
                 this.answerNum = Object.keys(this.subjectObj.answer).length
@@ -61,6 +59,8 @@ export default {
             // 入室数と回答数が等しくなったらせーの！ボタンを押下可能に。
             if(this.answerNum === this.roomObj.users) {
                 this.isPush = false
+            } else {
+                this.isPush = true
             }
 
             // リザルトトリガを監視してクライアントの画面一斉表示を判断
@@ -69,6 +69,16 @@ export default {
                 this.$router.push({name: "Answer", params: {id: key, attri: "answer"}})
             }
         },
+        roomObj: function(){
+            /*
+            上の同じ内容なのはお題DBの変更を起点とするか、部屋DBの変更を起点とするかが区別できないから
+            */
+            if(this.answerNum === this.roomObj.users) {
+                this.isPush = false
+            } else {
+                this.isPush = true
+            }
+        }
     },
     computed: {
         EnterNo: function(){
@@ -89,6 +99,8 @@ export default {
         onValue(ref(db, 'QA/' + key), (obj) => {
             if (obj.exists()) {
                 this.subjectObj = obj.val()
+                // 子コンポーネントに渡すデータなのでDB同期に合わせて更新
+                this.subject = this.subjectObj.subject
             }
         }, { onlyOnce: false });
     },
@@ -103,23 +115,23 @@ export default {
 </script>
 
 <style scoped>
-.user-icon {
+#user-icon {
     text-align: center;
-    margin: 20px 0px;
+    margin: 20px px;
 }
 img {
-    margin:0px 5px;
+    margin:10px 50px;
 }
-.room-header {
+p.room-header {
     font-size: 11px;
     margin: 5px;
     text-align: right;
 }
-.current-subject {
+p.current-subject {
     margin: 10px;
     padding-bottom: 10px;
 }
-div.se-no-btn {
+div#se-no-btn {
     text-align: center;
     padding-bottom: 50px;
 }

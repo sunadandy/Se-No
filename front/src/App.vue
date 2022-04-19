@@ -17,6 +17,9 @@ export default {
 </script>
 
 <style scoped>
+h2 {
+  text-align: center;
+}
 .app {
   width: 900px;
   margin: auto;

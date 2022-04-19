@@ -22,6 +22,7 @@ export default {
     methods: {
         ExitRoom() {
             const key = this.$route.params.id
+            const enterNo = this.$store.getters.GetRoomEnterNo
             const db = getDatabase();
             const refdb = ref(db, 'Rooms/' + key)
 
@@ -31,19 +32,15 @@ export default {
                 remove(ref(db, 'QA/' + key))
                 // 部屋DB削除
                 remove(refdb)
-                .then(() => {
-                    // リダイレクト
-                    this.$router.push("/")
-                })
+                // リダイレクト
+                this.$router.push("/")
             } else {
                 // usersカウンターをデクリメント
-                // [Issue]更新した直後にページが更新されるため、リダイレクトより先に画面描画が走ってしまう
-                // -> この瞬間だけmountedが機能しないようにフラグを持たせる？
                 update(refdb, {"users": this.users -1})
-                .then(() => {
-                    // リダイレクト
-                    this.$router.push("/")
-                })
+                // 回答削除
+                remove(ref(db, 'QA/' + key + "/answer/" + enterNo))
+                // リダイレクト
+                this.$router.push("/")
             }
         },
     },

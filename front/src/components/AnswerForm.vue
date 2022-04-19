@@ -1,16 +1,25 @@
 <template>
-    <v-text-field v-on:keyup.enter="SubmitAnswer" label="回答入力" placeholder="お題に対する回答を入力しよう！" :disabled='isInput' variant="underlined" clearable ref="input"></v-text-field>
+    <div>
+        <v-text-field v-on:keyup.enter="SubmitAnswer" label="回答入力" placeholder="お題に対する回答を入力しよう！" :disabled='isInput' variant="underlined" clearable ref="input">
+            <v-progress-linear class="progress-liner"
+                :active="submiting"
+                :indeterminate="submiting"
+                absolute
+                color="deep-purple accent-4"
+            ></v-progress-linear>
+        </v-text-field>
+    </div>
 </template>
 
 <script>
-import { getDatabase, ref, update } from "firebase/database";
+import { getDatabase, ref, update, onValue, remove } from "firebase/database";
 
 export default {
     name: "AnswerForm",
     data() {
         return {
-            answer: "",
             isInput: true,
+            submiting: false,
         }
     },
     props: {
@@ -23,6 +32,10 @@ export default {
             if(this.subject !== null){
                 this.isInput = false
             }
+        },
+        submiting: function(val) {
+            if (!val) return
+            setTimeout(() => (this.submiting = false), 500)
         }
     },
     methods: {
@@ -32,13 +45,20 @@ export default {
             const refdb = ref(db, "QA/" + key + "/answer")
             const enterNo = this.$store.getters.GetRoomEnterNo         
             this.answer = this.$refs.input.value
-
+            this.submiting = true
             // 回答をDBに送信
-            update(refdb, {[enterNo]: this.answer})
-            // フォームクリア -> vuetify導入後は機能していない
-            // this.$refs.input.value = null
-            // [Issue]お題設定完了アニメーションを追加したい（jQuery？）
+            if(this.answer === "") {
+                remove(ref(db, "QA/" + key + "/answer/" + enterNo))
+            } else {
+                update(refdb, {[enterNo]: this.answer})
+            }
         }
     }
 }
 </script>
+
+<style scoped>
+.progress-liner {
+    top: 35px
+}
+</style>
