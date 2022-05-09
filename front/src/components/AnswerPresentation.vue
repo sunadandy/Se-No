@@ -96,4 +96,7 @@ div.browser-back {
 div.answer-card {
     margin: 10px 5px;
 }
+div.flex {
+    flex-wrap: wrap;
+}
 </style>
