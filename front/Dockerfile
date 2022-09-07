@@ -5,5 +5,6 @@ WORKDIR /se-no
 COPY . /se-no/
 
 RUN npm install
+RUN npm run build
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "serve"]
