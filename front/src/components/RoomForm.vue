@@ -29,7 +29,7 @@ export default {
             // 入力情報が全て入っているか確認
             if(this.room_name != ""  && this.room_capa != "") {
                 // 部屋作成(userは作成と同時にカウント１)
-                push(ref(db, "Rooms"), {name: this.room_name, capacity: Number(this.room_capa), users: 1})
+                push(ref(db, "Rooms"), {name: this.room_name, capacity: Number(this.room_capa), users: 1, delete: false})
                 .then(res => {  // thenは非同期実行。つまりpushが完了したのちに呼ばれている
                     // 入室番号発行
                     this.$store.commit('SetRoomEnterNo')
