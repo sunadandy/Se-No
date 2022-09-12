@@ -21,21 +21,24 @@
     <div>
         <answer-form v-bind:subject="subject" />
     </div>
-    <div>
-        <room-exit v-bind:users="roomObj.users" />
+    <div class="buttom-menu">
+        <div style="display:inline-block; width:50%;"><room-delete /></div>
+        <div style="display:inline-block; width:50%; float:right; text-align:right"><room-exit v-bind:users="roomObj.users" /></div>
     </div>
 </template>
 
 <script>
 import RoomExit from '@/components/RoomExit'
+import RoomDelete from '@/components/RoomDelete'
 import SubjectForm from '@/components/SubjectForm'
 import AnswerForm from '@/components/AnswerForm'
-import { getDatabase, ref, onValue, update } from "firebase/database"
+import { getDatabase, ref, onValue, update, remove } from "firebase/database"
 
 export default {
     name: "RoomView",
     components: {
         RoomExit,
+        RoomDelete,
         SubjectForm,
         AnswerForm,
     },
@@ -77,6 +80,16 @@ export default {
                 this.isPush = false
             } else {
                 this.isPush = true
+            }
+
+            // 部屋削除要求を監視して部屋を爆破して一斉退出
+            if(this.roomObj.delete === true){
+                const db = getDatabase();
+                const key = this.$route.params.id
+                remove(ref(db, 'QA/' + key))
+                remove(ref(db, 'Rooms/' + key))
+                this.$router.push("/")
+                console.log("hello")
             }
         }
     },

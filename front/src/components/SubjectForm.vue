@@ -20,6 +20,7 @@ export default {
         return {
             subject: "",
             submiting: false,
+            deleted: false,
         }
     },
     watch: {
